@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Log In
+{% endblock title %}
+
+{% block content %}
+<div class="container w-50" style="min-width: 300px; max-width: 500px;">
+    <h1>Log In Page</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+    <input type="submit" value="Log In" class="btn btn-success d-block mx-auto">
+    </form>
+</div>
+{% endblock content %}

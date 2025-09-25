@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Post List
+{% endblock title%}
+
+{% block content %}
+    <h1>Post #{{ single_post.id }}</h1>
+    <h2>{{ single_post.title }}</h2>
+    <h5>{{ single_post.subtitle }}</h5>
+    <strong>Created on: {{ single_post.created_on }}</strong>
+    <p>{{ single_post.body }}</p>
+    <br/>
+    {% endblock content %}

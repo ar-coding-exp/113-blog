@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Post List
+{% endblock title %}
+
+{% block content %}
+    <h2>{{ paginator }}</h2>
+    <h2>{{ page_obj }}</h2>
+    <h2>{{ is_paginated }}</h2>
+    <h2>{{ object_list }}</h2>
+    <div class="container">
+        {% for item in post_list %}
+        <div><a href="{% url 'post_detail' item.id %}">{{ item.title }}</a></div>
+        <div>{{ item.subtitle }} </div>
+        <div>{{ item.body }} </div>
+        <div>{{ item.author }} </div>
+        <div>{{ item.created_on }} </div>
+        <div>{{ item.status }} </div>
+        <hr />
+        {% endfor %}
+    </div>
+
+{% endblock content %}
