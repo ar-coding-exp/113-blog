@@ -8,6 +8,10 @@ from django.views.generic import (
         DeleteView,
         UpdateView
 )
+from django.contrib.auth.mixins import (
+        LoginRequiredMixin,
+        UserPassesTestMixin
+)
 
 # Create your views here.
 #from .models import password_validation
@@ -25,26 +29,42 @@ class PostListView(ListView):
     model = Post 
     context_object_name = "post_list"
     status = Status.objects.get(name="published")
-    queryset = Post.objects.filter(status=status).order_by("created_on").reverse
+    queryset = Post.objects.filter(status=status).order_by("created_on").reverse()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         print(context)
         return context
 
-class PostDraftListView(ListView):
-    template_name = "posts/list.html"
-    model = Post 
-    context_object_name = "post_list"
+class PostDraftListView(ListView, LoginRequiredMixin):
+    template_name = "posts/list-draft.html"
+    #model = Post 
+    context_object_name = "drafts"
     status = Status.objects.get(name="draft")
-    queryset = Post.objects.filter(status=status).order_by("created_on").reverse
+    queryset = Post.objects.filter(status=status).order_by("created_on").reverse()
 
-class PostArchiveListView(ListView):
-    template_name = "posts/list.html"
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        draft_posts = context['drafts'].filter(author=self.request.user) 
+        context['drafts'] = draft_posts
+        print(draft_posts)
+        print(context)
+        return context
+
+class PostArchiveListView(LoginRequiredMixin,ListView):
+    template_name = "posts/list-archived.html"
     model = Post 
-    context_object_name = "post_list"
+    context_object_name = "archived"
     status = Status.objects.get(name="archived")
-    queryset = Post.objects.filter(status=status).order_by("created_on").reverse
+    queryset = Post.objects.filter(status=status).order_by("created_on").reverse()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        archived_posts = context['archived'].filter(author=self.request.user) 
+        context['archived'] = archived_posts
+        print(archived_posts)
+        print(context)
+        return context
 
 class PostDetailView(DetailView):
     template_name = "posts/detail.html"
@@ -54,10 +74,10 @@ class PostDetailView(DetailView):
     #"""
     #PostCreateView is going to allow us to create a new post and add it to the db
     #"""
-class PostCreateView(CreateView):
+class PostCreateView(LoginRequiredMixin,CreateView):
     template_name = "posts/new.html"
     model = Post
-    fields = ["title","subtitle","body"]
+    fields = ["title","subtitle","body","status"]
 
     def form_valid(self, form):
         print(form)
