@@ -5,9 +5,9 @@
 {% endblock title %}
 
 {% block content %}
-    <div class="container">
+    <div class="bg-secondary text-white container">
         {% for item in archived %}
-        <div><a href="{% url 'post_detail' item.id %}">{{ item.title }}</a></div>
+        <div class="h3"><a class="text-info h3" href="{% url 'post_detail' item.id %}">{{ item.title }}</a></div>
         <div>{{ item.subtitle }} </div>
         <div>{{ item.body }} </div>
         <div>{{ item.author }} </div>

@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
+  <div class="container-fluid bg-info">
     <a class="navbar-brand" href="{% url 'home' %}">Navbar</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -23,28 +23,22 @@
           <a class="nav-link" href="{% url 'posts' %}">Posts</a>
         </li>
         {% else %}
-         <li class="nav-item">
-          <a class="nav-link" href="{% url 'posts' %}">Posts</a>
-        </li>
-         <li class="nav-item">
-          <a class="nav-link" href="{% url 'home' %}">About</a>
-        </li>
         {% endif %}
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Dropdown
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-        </li>
         <li class="nav-item">
           <a class="nav-link disabled" aria-disabled="true">Disabled</a>
         </li>
         {% if user.is_authenticated %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Manage Post
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{% url 'post_new' %}">New Post</a></li>
+            <li><a class="dropdown-item" href="#">Delete Post</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Edit Post</a></li>
+          </ul>
+        </li>
         <li class="nav-item">
         <form method="post" action="{% url 'logout' %}">
           {% csrf_token %}
@@ -52,6 +46,11 @@
         </form>
         </li>
         {% endif %}
+              {% if not user.is_authenticated %}
+        <form method="post" action="{% url 'login' %}">
+          {% csrf_token %}
+        <input type="submit" value="Login" class="nav-link active">
+      {% endif %}
       </ul>
       {% if user.is_authenticated %}
       <form class="d-flex" role="search">

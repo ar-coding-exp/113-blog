@@ -1,7 +1,14 @@
+body {
+    background-color: rgb(205, 230, 253);
+}
+}
 p {
     text-transform: uppercase;
     letter-spacing: 1px;
 }
 h1{
     background-color: greenyellow;
+}
+.container {
+    background-color: rgb(185, 239, 239);
 }
